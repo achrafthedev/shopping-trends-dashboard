@@ -25,7 +25,7 @@ PythonProject/
 ## 🚀 Installation
 ### 1️⃣ Cloner le projet
 ```bash
-git clone https://github.com/ton-utilisateur/shopping-trends-dashboard.git
+git clone https://github.com/achrafthedev/shopping-trends-dashboard.git
 cd shopping-trends-dashboard
 ```
 
