@@ -3,6 +3,8 @@
 ## 📝 Description
 Ce projet est un **dashboard interactif** développé avec **Streamlit** et une **API FastAPI** permettant de visualiser les tendances d'achat des clients à partir du dataset **Customer Shopping Trends**. Il offre des visualisations claires et des indicateurs clés (KPI) pour analyser les données clients, les produits vendus, et les préférences des utilisateurs.
 
+➡️ **Dataset source :** [Customer Shopping Latest Trends Dataset](https://www.kaggle.com/datasets/bhadramohit/customer-shopping-latest-trends-dataset)
+
 ## ⚙️ Fonctionnalités principales
 - ✅ **API RESTful avec FastAPI** pour exposer les données sous forme d'endpoints.
 - ✅ **Dashboard interactif avec Streamlit** pour visualiser les données et les KPI.
