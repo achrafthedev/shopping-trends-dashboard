@@ -1,22 +1,71 @@
 import streamlit as st
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
+
+# Charger le dataset
+data = pd.read_csv('shopping_trends.csv')
 
 # Dashboard interactif avec Streamlit
-st.title("Dashboard - Customer Shopping Trends")
+st.set_page_config(page_title="Customer Shopping Trends Dashboard", layout="wide")
+st.title("📊 Customer Shopping Trends Dashboard")
+st.markdown("---")
 
-# KPI : Montant moyen dépensé
-average_spend = 59.76  # Exemple de donnée
-st.metric("Montant moyen dépensé", f"${average_spend:.2f}")
+# Section 1 : KPI Cards
+st.header("🔎 Key Performance Indicators (KPIs)")
+col1, col2, col3 = st.columns(3)
 
-# Visualisation de la répartition des notes
-rating_distribution = {
-    5: 100,
-    4: 200,
-    3: 150,
-    2: 50,
-    1: 30
-}
+# KPI 1 : Montant moyen dépensé
+average_spend = data['Purchase Amount (USD)'].mean()
+col1.metric("Montant moyen dépensé", f"${average_spend:.2f}")
+
+# KPI 2 : Produit le plus vendu
+top_product = data['Item Purchased'].value_counts().idxmax()
+col2.metric("Produit le plus vendu", top_product)
+
+# KPI 3 : Taux d'utilisation des codes promo
+promo_usage_percentage = (data['Promo Code Used'].value_counts(normalize=True) * 100)['Yes']
+col3.metric("Taux d'utilisation des codes promo", f"{promo_usage_percentage:.2f}%")
+
+st.markdown("---")
+
+# Section 2 : Visualisations
+st.header("📊 Visualisations des Données")
+
+# Répartition des notes attribuées
+st.subheader("Répartition des notes attribuées")
+rating_distribution = data['Review Rating'].value_counts()
 fig, ax = plt.subplots()
-ax.bar(rating_distribution.keys(), rating_distribution.values())
+ax.bar(rating_distribution.index, rating_distribution.values, color="skyblue")
+ax.set_title("Distribution des Notes")
+ax.set_xlabel("Notes")
+ax.set_ylabel("Nombre d'Avis")
 st.pyplot(fig)
+
+# Taux d'utilisation des codes promo
+st.subheader("Taux d'utilisation des codes promo")
+promo_usage = data['Promo Code Used'].value_counts()
+fig, ax = plt.subplots()
+ax.pie(promo_usage, labels=promo_usage.index, autopct='%1.1f%%', startangle=90, colors=["#FF9999", "#66B3FF"])
+ax.set_title("Utilisation des Codes Promo")
+st.pyplot(fig)
+
+# Méthodes de paiement les plus utilisées
+st.subheader("Méthodes de paiement les plus utilisées")
+payment_methods = data['Payment Method'].value_counts()
+fig, ax = plt.subplots()
+ax.bar(payment_methods.index, payment_methods.values, color="#66C2A5")
+ax.set_title("Répartition des Méthodes de Paiement")
+ax.set_xlabel("Méthodes de Paiement")
+ax.set_ylabel("Nombre de Transactions")
+plt.xticks(rotation=45)
+st.pyplot(fig)
+
+st.markdown("---")
+
+# Section 3 : Insights supplémentaires
+st.header("📈 Insights Supplémentaires")
+
+# Produit le plus vendu par catégorie
+st.subheader("Produit le plus vendu par catégorie")
+top_products_by_category = data.groupby('Category')['Item Purchased'].apply(lambda x: x.value_counts().idxmax())
+st.write(top_products_by_category)
